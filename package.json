@@ -3,16 +3,26 @@
   "version": "1.0.0",
   "description": "Serverless webpack example using ecma script",
   "scripts": {
-    "dev": "NODE_PATH=src APP_ENV=local nodemon src/server --exec babel-node --plugins transform-es2015-modules-commonjs"
+    "dev": "NODE_PATH=src APP_ENV=local nodemon src/server --exec babel-node --plugins transform-es2015-modules-commonjs",
+    "deploy:dev": "sls deploy --stage dev -v"
   },
   "devDependencies": {
     "@babel/core": "^7.9.6",
     "@babel/node": "^7.8.7",
+    "@babel/preset-flow": "^7.9.0",
+    "@types/koa": "^2.11.3",
+    "@types/koa-router": "^7.4.1",
+    "@typescript-eslint/eslint-plugin": "^2.34.0",
+    "@typescript-eslint/parser": "^2.34.0",
+    "babel-eslint": "^10.1.0",
     "babel-loader": "^8.1.0",
     "babel-plugin-transform-runtime": "^6.23.0",
     "babel-polyfill": "^6.23.0",
     "babel-preset-env": "^1.6.0",
+    "eslint": "^7.0.0",
+    "eslint-plugin-flowtype": "^5.1.0",
     "serverless-webpack": "^5.3.1",
+    "typescript": "^3.9.3",
     "webpack": "^4.35.2"
   },
   "author": "The serverless webpack authors (https://github.com/elastic-coders/serverless-webpack)",
@@ -22,5 +32,28 @@
     "koa-router": "^8.0.8",
     "nodemon": "^2.0.4",
     "serverless-http": "^2.5.0"
+  },
+  "eslintConfig": {
+    "parser": "babel-eslint",
+    "plugins": [
+      "flowtype"
+    ],
+    "env": {
+      "es6": true,
+      "node": true
+    },
+    "extends": [
+      "eslint:recommended",
+      "plugin:flowtype/recommended"
+    ],
+    "globals": {
+      "Atomics": "readonly",
+      "SharedArrayBuffer": "readonly"
+    },
+    "parserOptions": {
+      "ecmaVersion": 11,
+      "sourceType": "module"
+    },
+    "rules": {}
   }
 }
