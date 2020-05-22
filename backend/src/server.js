@@ -1,3 +1,4 @@
+//@flow
 import Koa from 'koa';
 import router from './router';
 import serverless from 'serverless-http';
@@ -20,7 +21,7 @@ export default class Server {
     console.log('Listening to port', port);
   }
 
-  get serverless(): any {
+  serverless(): any {
     const { app } = this;
     return serverless(app);
   }

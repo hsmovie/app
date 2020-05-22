@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "Serverless webpack example using ecma script",
   "scripts": {
-    "dev": "NODE_PATH=src APP_ENV=local nodemon src/server --exec babel-node --plugins transform-es2015-modules-commonjs",
+    "dev": "NODE_PATH=src APP_ENV=local nodemon src/local --exec babel-node --plugins transform-es2015-modules-commonjs --presets @babel/flow",
     "deploy:dev": "sls deploy --stage dev -v"
   },
   "devDependencies": {
