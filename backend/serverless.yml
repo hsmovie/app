@@ -7,7 +7,6 @@ service:
 # Add the serverless-webpack plugin
 plugins:
   - serverless-webpack
-  - serverless-plugin-typescript
 
 provider:
   name: aws
@@ -17,7 +16,7 @@ provider:
 
 functions:
   api:
-    handler: src/server.handler
+    handler: src/api.handler
     events:
       - http:
           path: /

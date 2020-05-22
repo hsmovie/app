@@ -17,7 +17,13 @@ module.exports = {
         enforce: 'pre', // preload the jshint loader
         exclude: /node_modules/, // exclude any and all files in the node_modules folder
         include: __dirname,
-        use: { loader: 'babel-loader' },
+        use: {
+          loader: 'babel-loader',
+          options: {
+            plugins: ['transform-es2015-modules-commonjs'],
+            presets: ['@babel/flow'],
+          },
+        },
       },
     ],
   },
