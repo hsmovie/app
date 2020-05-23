@@ -1,5 +1,5 @@
 //@flow
 import Server from './server';
 
-const server: Server = new Server();
+const server = new Server();
 server.listen(3000);

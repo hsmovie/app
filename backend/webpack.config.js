@@ -19,10 +19,6 @@ module.exports = {
         include: __dirname,
         use: {
           loader: 'babel-loader',
-          options: {
-            plugins: ['transform-es2015-modules-commonjs'],
-            presets: ['@babel/flow'],
-          },
         },
       },
     ],
