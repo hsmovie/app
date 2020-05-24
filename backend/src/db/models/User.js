@@ -2,6 +2,7 @@ import Sequelize from 'sequelize';
 import db from '../db';
 import UserProfile from './UserProfile';
 import SocialAccount from './SocialAccount';
+import bcrypt from 'bcrypt';
 
 const User = db.define(
   'user',
@@ -41,6 +42,15 @@ const User = db.define(
 User.associate = function () {
   User.hasOne(UserProfile, { foreignKey: 'fkUserId' });
   User.hasMany(SocialAccount, { foreignKey: 'fkUserId' });
+};
+
+User.crypt = async function (password) {
+  const saltRounds = 10;
+  return bcrypt.hash(password, saltRounds);
+};
+
+User.getExistancy = function (type, value) {
+  return User.findOne({ [type]: value });
 };
 
 User.findUser = function (type, value) {
