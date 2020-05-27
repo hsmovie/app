@@ -7,5 +7,5 @@ export function associate() {
 export default function sync() {
   console.log('sync');
   associate();
-  db.sync({ force: true });
+  db.sync();
 }

@@ -3,6 +3,7 @@ import db from '../db';
 import UserProfile from './UserProfile';
 import SocialAccount from './SocialAccount';
 import bcrypt from 'bcrypt';
+import { generate } from '../../lib/token';
 
 const User = db.define(
   'user',
@@ -20,10 +21,10 @@ const User = db.define(
       type: Sequelize.STRING,
       unique: true,
     },
-    passwordHash: {
+    password_hash: {
       type: Sequelize.STRING,
     },
-    isCertified: {
+    is_certified: {
       type: Sequelize.BOOLEAN,
     },
   },
@@ -36,12 +37,13 @@ const User = db.define(
         fields: ['email'],
       },
     ],
+    underscored: true,
   }
 );
 
 User.associate = function () {
-  User.hasOne(UserProfile, { foreignKey: 'fkUserId' });
-  User.hasMany(SocialAccount, { foreignKey: 'fkUserId' });
+  User.hasOne(UserProfile, { foreignKey: 'fk_user_id' });
+  User.hasMany(SocialAccount, { foreignKey: 'fk_user_id' });
 };
 
 User.crypt = async function (password) {
@@ -49,12 +51,19 @@ User.crypt = async function (password) {
   return bcrypt.hash(password, saltRounds);
 };
 
-User.getExistancy = function (type, value) {
-  return User.findOne({ [type]: value });
-};
-
 User.findUser = function (type, value) {
   return User.findOne({ where: { [type]: value } });
+};
+
+User.prototype.validatePassword = function (password) {
+  console.log(password);
+  const { password_hash } = this;
+  return bcrypt.compareSync(password, password_hash);
+};
+
+User.prototype.generateToken = function () {
+  const { id, username } = this;
+  return generate({ id, username });
 };
 
 export default User;

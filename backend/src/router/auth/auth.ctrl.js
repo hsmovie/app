@@ -19,21 +19,74 @@ export const createLocalAccount = async (ctx) => {
   const { email, password, username } = ctx.request.body;
   try {
     const [emailExists, usernameExists] = await Promise.all([
-      User.getExistancy('email', email),
-      User.getExistancy('usename', username),
+      User.findUser('email', email),
+      User.findUser('username', username),
     ]);
-    // if (emailExists || usernameExists) {
-
-    // }
-    console.log(emailExists, usernameExists);
-  } catch (e) {}
+    if (emailExists || usernameExists) {
+      ctx.status = 409;
+      ctx.body = {
+        name: 'DUPLICATED_ACCOUNT',
+        payload: emailExists ? 'email' : 'username',
+      };
+      return;
+    }
+  } catch (e) {
+    console.log(e);
+  }
   try {
     const user = await User.build({
       username,
       email,
-      passwordHash: await User.crypt(password),
+      password_hash: await User.crypt(password),
     }).save();
-    ctx.body = user.dataValues;
+    const token = await user.generateToken();
+    ctx.body = {
+      user,
+      token,
+    };
+  } catch (e) {
+    ctx.throw(500, e);
+  }
+};
+
+export const localLogin = async (ctx) => {
+  const { email, username, password } = ctx.request.body;
+  if (!(email || username)) {
+    ctx.status = 400;
+    ctx.body = {
+      name: 'LOGIN_FAILURE',
+    };
+    return;
+  }
+  const schema = Joi.object().keys({
+    email: Joi.string().email(),
+    password: Joi.string().min(6).required(),
+    username: Joi.string().alphanum().min(3).max(20),
+  });
+  const result = Joi.validate(ctx.request.body, schema);
+  if (result.error) {
+    ctx.status = 401;
+    ctx.body = {
+      name: 'LOGIN_FAILURE',
+    };
+    return;
+  }
+  try {
+    const value = email ? email : username;
+    const type = email ? 'email' : 'username';
+    const user = await User.findUser(type, value);
+    const validated = await user.validatePassword(password);
+    if (!validated) {
+      ctx.status = 401;
+      ctx.body = {
+        name: 'LOGIN_FAILURE',
+      };
+      return;
+    }
+    const token = await user.generateToken();
+    ctx.body = {
+      token,
+    };
   } catch (e) {
     ctx.throw(500, e);
   }
