@@ -40,8 +40,17 @@ export const createLocalAccount = async (ctx) => {
       password_hash: await User.crypt(password),
     }).save();
     const token = await user.generateToken();
+
+    ctx.cookies.set('access_token', token, {
+      httpOnly: true,
+      maxAge: 1000 * 60 * 60 * 24 * 7,
+    });
+
     ctx.body = {
-      user,
+      user: {
+        id: user.id,
+        username: user.username,
+      },
       token,
     };
   } catch (e) {
@@ -75,6 +84,14 @@ export const localLogin = async (ctx) => {
     const value = email ? email : username;
     const type = email ? 'email' : 'username';
     const user = await User.findUser(type, value);
+    if (!user) {
+      ctx.status = 401;
+      ctx.body = {
+        name: 'LOGIN_FAILURE',
+      };
+      return;
+    }
+
     const validated = await user.validatePassword(password);
     if (!validated) {
       ctx.status = 401;
@@ -84,7 +101,17 @@ export const localLogin = async (ctx) => {
       return;
     }
     const token = await user.generateToken();
+
+    ctx.cookies.set('access_token', token, {
+      httpOnly: true,
+      maxAge: 1000 * 60 * 60 * 24 * 7,
+    });
+
     ctx.body = {
+      user: {
+        id: user.id,
+        username: user.username,
+      },
       token,
     };
   } catch (e) {
