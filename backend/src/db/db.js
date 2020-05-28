@@ -1,8 +1,9 @@
 const Sequelize = require('sequelize');
 
-const host = 'app.cwnaw41de8hl.ap-northeast-2.rds.amazonaws.com';
-const db = new Sequelize('app', 'root', '4434194aA!', {
-  host,
+const { DB_HOST, DB_USER, DB_USER_PASSWORD } = process.env;
+
+const db = new Sequelize('app', DB_USER, DB_USER_PASSWORD, {
+  host: DB_HOST,
   dialect: 'postgres',
 });
 

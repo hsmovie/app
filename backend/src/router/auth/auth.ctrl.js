@@ -39,6 +39,11 @@ export const createLocalAccount = async (ctx) => {
       email,
       password_hash: await User.crypt(password),
     }).save();
+
+    const userProfile = await UserProfile.build({
+      fk_user_id: user.id,
+    }).save();
+
     const token = await user.generateToken();
 
     ctx.cookies.set('access_token', token, {
@@ -117,4 +122,8 @@ export const localLogin = async (ctx) => {
   } catch (e) {
     ctx.throw(500, e);
   }
+};
+
+export const check = async (ctx) => {
+  ctx.body = ctx.user;
 };

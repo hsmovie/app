@@ -2,7 +2,7 @@ import Sequelize from 'sequelize';
 import db from '../db';
 import UserProfile from './UserProfile';
 import SocialAccount from './SocialAccount';
-import bcrypt from 'bcrypt';
+import bcrypt from 'bcryptjs';
 import { generate } from '../../lib/token';
 
 const User = db.define(
@@ -63,7 +63,7 @@ User.prototype.validatePassword = function (password) {
 
 User.prototype.generateToken = function () {
   const { id, username } = this;
-  return generate({ id, username });
+  return generate({ user: { id, username } });
 };
 
 export default User;

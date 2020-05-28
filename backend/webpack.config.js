@@ -1,5 +1,6 @@
 const path = require('path');
 const slsw = require('serverless-webpack');
+const webpack = require('webpack');
 
 module.exports = {
   entry: slsw.lib.entries,
@@ -23,4 +24,8 @@ module.exports = {
       },
     ],
   },
+  plugins: [
+    new webpack.DefinePlugin({ 'global.GENTLY': false }),
+    // new webpack.IgnorePlugin(/^hiredis$/),
+  ],
 };

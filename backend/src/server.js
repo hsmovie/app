@@ -1,10 +1,10 @@
-//@flow
 import Koa from 'koa';
 import router from './router';
 import serverless from 'serverless-http';
 import koaBody from 'koa-body';
 import db from './db/db';
 import dbSync from './db/sync';
+import authToken from './lib/middlewares/authToken';
 
 export default class Server {
   constructor() {
@@ -29,11 +29,13 @@ export default class Server {
     return new Promise((resolve, reject) => {
       let counter = 0;
       const tryConnect = async () => {
+        console.log('im in2');
         try {
           await db.authenticate();
           resolve();
         } catch (e) {
           counter++;
+          console.log('im in3', counter);
           console.log(`db connection failed ${counter}`);
           if (counter > 5) {
             reject(new Error('Failed after 5 retries'));
@@ -48,6 +50,7 @@ export default class Server {
 
   middleware() {
     const { app } = this;
+    app.use(authToken);
     app.use(koaBody());
     app.use(router.routes()).use(router.allowedMethods());
     app.use(async (ctx, next) => {
