@@ -33,6 +33,7 @@ export const createLocalAccount = async (ctx) => {
   } catch (e) {
     console.log(e);
   }
+
   try {
     const user = await User.build({
       username,

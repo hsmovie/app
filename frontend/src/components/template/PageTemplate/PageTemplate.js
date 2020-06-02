@@ -1,8 +1,12 @@
 import React from 'react';
-import styled from 'styled-components';
 
-const PageTemplate = () => {
-  return <div>PageTemplate</div>;
+const PageTemplate = ({ header, children }) => {
+  return (
+    <div>
+      {header}
+      <main>{children}</main>
+    </div>
+  );
 };
 
 export default PageTemplate;
