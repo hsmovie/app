@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { breakpoint } from '../../../styles/variables';
 
-const { wide, large, medium, small } = breakpoint;
+const { huge, large, medium, small } = breakpoint;
 
 const div = ({ children, className, ...rest }) => (
   <div {...rest} className={className}>
@@ -15,7 +15,7 @@ export const Container = styled(div)`
   padding-left: 1rem;
   padding-right: 1rem;
   margin: 0 auto;
-  @media (max-width: ${wide}) {
+  @media (max-width: ${huge}) {
     width: ${large};
   }
 

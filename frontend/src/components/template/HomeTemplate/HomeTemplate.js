@@ -17,6 +17,7 @@ const HomeTemplate = () => {
         </div>
         <div className="right-form">
           <div className="black-box">저는 어쩌고이고 어쩌고인데~</div>
+          <div className="register-button">지금 시작하기</div>
         </div>
       </Responsive>
     </Sc.Container>
