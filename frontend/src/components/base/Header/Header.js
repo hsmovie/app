@@ -1,10 +1,11 @@
 import React from 'react';
+import Responsive from '../../common/Responsive';
 import * as Sc from './styled';
 
 const Header = () => {
   return (
     <Sc.Header>
-      <div className="header-wrapper">
+      <Responsive className="header-wrapper">
         <div className="brand">etf</div>
         <nav>
           <a className="active" href="/">
@@ -14,8 +15,8 @@ const Header = () => {
           <a href="/">Link</a>
           <a href="/">Link</a>
         </nav>
-        <div>right side</div>
-      </div>
+        <div className="right">right side</div>
+      </Responsive>
     </Sc.Header>
   );
 };

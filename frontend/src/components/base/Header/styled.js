@@ -1,10 +1,12 @@
 import styled from 'styled-components';
+import { color } from '../../../styles/variables';
+
+const { main } = color;
 
 export const Header = styled.header`
   display: flex;
   .header-wrapper {
-    width: 1200px;
-    height: 4rem;
+    height: 6rem;
     margin: 0 auto;
     display: flex;
     align-items: center;
@@ -20,9 +22,8 @@ export const Header = styled.header`
       margin-left: 3rem;
       a {
         font-size: 1.25rem;
-        color: #adb5bd;
+        color: ${main};
         &.active {
-          color: yellow;
           font-weight: 500;
         }
         & + a {

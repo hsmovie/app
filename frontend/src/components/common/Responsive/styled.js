@@ -1,8 +1,35 @@
+import React from 'react';
 import styled from 'styled-components';
+import { breakpoint } from '../../../styles/variables';
 
-export const Container = styled.div`
+const { wide, large, medium, small } = breakpoint;
+
+const div = ({ children, className, ...rest }) => (
+  <div {...rest} className={className}>
+    {children}
+  </div>
+);
+
+export const Container = styled(div)`
   width: 1200px;
   padding-left: 1rem;
   padding-right: 1rem;
-  @include;
+  margin: 0 auto;
+  @media (max-width: ${wide}) {
+    width: ${large};
+  }
+
+  @media (max-width: ${large}) {
+    width: ${medium};
+  }
+
+  @media (max-width: ${medium}) {
+    width: 100%;
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
+  }
+  @media (max-width: ${small}) {
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+  }
 `;
