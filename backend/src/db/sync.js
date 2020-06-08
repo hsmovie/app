@@ -1,5 +1,5 @@
 import db from './db';
-import { User, UserProfile } from './models';
+import { User, UserProfile, UserAuth } from './models';
 export function associate() {
   User.associate();
 }

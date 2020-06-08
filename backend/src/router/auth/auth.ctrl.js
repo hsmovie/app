@@ -1,5 +1,34 @@
-import { User, UserProfile } from '../../db/models';
+import { User, UserProfile, EmailAuth } from '../../db/models';
 import Joi, { allow } from 'joi';
+
+export const verifyEmail = async (ctx) => {
+  const schema = Joi.object().keys({
+    email: Joi.string().email().required(),
+  });
+  const result = Joi.validate(ctx.request.body, schema);
+  if (result.error) {
+    ctx.status = 400;
+    ctx.body = {
+      name: 'WRONG_SCHEMA',
+      payload: result.error,
+    };
+    return;
+  }
+
+  try {
+    const { email } = ctx.request.body;
+    const emailAuth = await EmailAuth.build({
+      email,
+    }).save();
+    console.log(emailAuth.code);
+  } catch (e) {
+    ctx.throw(500, e);
+  }
+
+  ctx.body = {
+    status: true,
+  };
+};
 
 export const createLocalAccount = async (ctx) => {
   const schema = Joi.object().keys({

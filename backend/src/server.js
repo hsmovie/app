@@ -29,13 +29,11 @@ export default class Server {
     return new Promise((resolve, reject) => {
       let counter = 0;
       const tryConnect = async () => {
-        console.log('im in2');
         try {
           await db.authenticate();
           resolve();
         } catch (e) {
           counter++;
-          console.log('im in3', counter);
           console.log(`db connection failed ${counter}`);
           if (counter > 5) {
             reject(new Error('Failed after 5 retries'));
